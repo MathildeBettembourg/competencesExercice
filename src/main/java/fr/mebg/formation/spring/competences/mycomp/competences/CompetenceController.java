@@ -1,16 +1,16 @@
-package fr.mebg.formation.spring.competences.mycomp.equipe;
+package fr.mebg.formation.spring.competences.mycomp.competences;
 
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
 @CrossOrigin
-@RequestMapping("/equipes")
-public class EquipeController {
-    private final EquipeService equipeService;
+@RequestMapping("/competences")
+public class CompetenceController {
+    private final CompetenceService competenceService;
 
-    public EquipeController(EquipeService equipeService) {
-        this.equipeService = equipeService;
+    public CompetenceController(CompetenceService competenceService) {
+        this.competenceService = competenceService;
     }
 
     /**
@@ -19,8 +19,8 @@ public class EquipeController {
      * @return une liste de personne
      */
     @GetMapping("")
-    public List<Equipe> findAll() {
-        return equipeService.findAll();
+    public List<Competence> findAll() {
+        return competenceService.findAll();
     }
 
     /**
@@ -30,8 +30,8 @@ public class EquipeController {
      * @return une entité
      */
     @PostMapping("")
-    public Equipe save(@RequestBody Equipe entity) {
-        return equipeService.save(entity);
+    public Competence save(@RequestBody Competence entity) {
+        return competenceService.save(entity);
     }
 
     /**
@@ -41,11 +41,11 @@ public class EquipeController {
      * @return
      */
     @GetMapping("{id}")
-    public Equipe findById(@PathVariable String s) {
-        return equipeService.findById(s);
+    public Competence findById(@PathVariable String s) {
+        return competenceService.findById(s);
     }
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable String s) {
-        equipeService.deleteById(s);
+        competenceService.deleteById(s);
     }
 }

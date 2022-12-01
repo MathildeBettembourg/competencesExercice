@@ -1,36 +1,36 @@
-package fr.mebg.formation.spring.competences.mycomp.equipe;
+package fr.mebg.formation.spring.competences.mycomp.competences;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-public class EquipeServiceImpl implements EquipeService {
+public class CompetenceServiceImpl implements CompetenceService {
 
 
-    public EquipeServiceImpl(EquipeRepository equipeRepository) {
-        this.equipeRepository = equipeRepository;
+    public CompetenceServiceImpl(CompetenceRepository competenceRepository) {
+        this.competenceRepository = competenceRepository;
     }
 
-    private final EquipeRepository equipeRepository;
+    private final CompetenceRepository competenceRepository;
 
     @Override
-    public List<Equipe> findAll() {
-        return equipeRepository.findAll();
-    }
-
-    @Override
-    public Equipe save(Equipe entity) {
-        return equipeRepository.save(entity);
+    public List<Competence> findAll() {
+        return competenceRepository.findAll();
     }
 
     @Override
-    public Equipe findById(String id) {
-        return equipeRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public Competence save(Competence entity) {
+        return competenceRepository.save(entity);
     }
 
     @Override
-    public void deleteById(String id) {
-        equipeRepository.deleteById(id);
+    public Competence findById(String s) {
+        return competenceRepository.findById(s).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public void deleteById(String s) {
+        competenceRepository.deleteById(s);
     }
 }

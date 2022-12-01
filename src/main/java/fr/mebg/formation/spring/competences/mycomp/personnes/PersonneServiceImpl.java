@@ -6,7 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-
+//enlever le @servie et faire personne configuration
 public class PersonneServiceImpl implements PersonneService {
 
     public PersonneServiceImpl(PersonneRepository personneRepository) {

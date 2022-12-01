@@ -1,6 +1,6 @@
-package fr.mebg.formation.spring.competences.mycomp.equipe;
+package fr.mebg.formation.spring.competences.mycomp.competences;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface EquipeRepository extends MongoRepository<Equipe, String> {
+public interface CompetenceRepository extends MongoRepository<Competence, String> {
 }

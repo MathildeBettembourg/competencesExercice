@@ -1,13 +1,13 @@
-package fr.mebg.formation.spring.competences.mycomp.equipe;
+package fr.mebg.formation.spring.competences.mycomp.competences;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 @Configuration
-public class EquipeConfiguration {
+public class CompetenceConfiguration {
 
 
     @Bean
-    public EquipeService equipeService(EquipeRepository equipeRepository){
-        return new EquipeServiceImpl(equipeRepository);
+    public CompetenceService competenceService(CompetenceRepository competenceRepository){
+        return new CompetenceServiceImpl(competenceRepository);
     }
 }

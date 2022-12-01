@@ -1,4 +1,4 @@
-package fr.mebg.formation.spring.competences.mycomp.equipe;
+package fr.mebg.formation.spring.competences.mycomp.competences;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,13 +10,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @AllArgsConstructor
 @NoArgsConstructor
-public class Equipe {
+public class Competence {
 
         @Id
         private String id;
 
-        private String prenom;
-
+        private String nom;
+        private String description;
 
     }
 
