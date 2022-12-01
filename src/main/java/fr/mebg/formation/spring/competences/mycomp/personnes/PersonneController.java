@@ -38,15 +38,22 @@ public class PersonneController {
     /**
      * FINDBYID
      * fonction permet de trouver par id id
-     * @param s qui est l'id de la personne à trouver
+     * @param id qui est l'id de la personne à trouver
      * @return
      */
     @GetMapping("{id}")
-    public Personne findById(@PathVariable String s) {
-        return personneService.findById(s);
+    public Personne findById(@PathVariable String id) {
+        return personneService.findById(id);
     }
     @DeleteMapping("{id}")
-    public void deleteById(@PathVariable String s) {
-        personneService.deleteById(s);
+    public void deleteById(@PathVariable String id) {
+        personneService.deleteById(id);
+    }
+
+    @PutMapping("{id}/competence/{idc}")
+    public  NiveauCompetence ajoutModifNiveauCompetence(@PathVariable String id,
+                                                @PathVariable String idc,
+                                                @RequestParam Integer niveau){
+        return this.personneService.modifNiveau(id, idc, niveau);
     }
 }

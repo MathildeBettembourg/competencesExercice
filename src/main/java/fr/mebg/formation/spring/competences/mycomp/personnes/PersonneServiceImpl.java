@@ -34,4 +34,14 @@ public class PersonneServiceImpl implements PersonneService {
     public void deleteById(String id) {
         personneRepository.deleteById(id);
     }
+
+    public NiveauCompetence modifNiveau(String id,String idc, int niveau){
+        NiveauCompetence niveauCompetenceAModifier = this.findById(id).getCompetences().get(idc.parseInt());
+        if(niveauCompetenceAModifier == null) {
+            niveauCompetenceAModifier.setNiveau(niveau);
+            }else if(!niveauCompetenceAModifier.equals(niveau)){
+               niveauCompetenceAModifier.setNiveau(niveau);
+        }
+        return niveauCompetenceAModifier;
+    }
 }
