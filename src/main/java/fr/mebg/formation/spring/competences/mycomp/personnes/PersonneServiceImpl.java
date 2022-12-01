@@ -7,7 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 @Service
-public class PersonneServiceImpl {
+public class PersonneServiceImpl implements PersonneService {
 
     public PersonneServiceImpl(PersonneRepository personneRepository) {
         this.personneRepository = personneRepository;
@@ -15,19 +15,23 @@ public class PersonneServiceImpl {
 
     private final PersonneRepository personneRepository;
 
+    @Override
     public List<Personne> findAll() {
         return personneRepository.findAll();
     }
 
+    @Override
     public Personne save(Personne entity) {
         return personneRepository.save(entity);
     }
 
-    public Personne findById(String s) {
-        return personneRepository.findById(s).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    @Override
+    public Personne findById(String id) {
+        return personneRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public void deleteById(String s) {
-        personneRepository.deleteById(s);
+    @Override
+    public void deleteById(String id) {
+        personneRepository.deleteById(id);
     }
 }

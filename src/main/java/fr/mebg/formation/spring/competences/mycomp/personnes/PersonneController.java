@@ -8,9 +8,9 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/personnes")
 public class PersonneController {
-    private final PersonneServiceImpl personneService;
+    private final PersonneService personneService;
 
-    public PersonneController(PersonneServiceImpl personneService) {
+    public PersonneController(PersonneService personneService) {
         this.personneService = personneService;
     }
 
