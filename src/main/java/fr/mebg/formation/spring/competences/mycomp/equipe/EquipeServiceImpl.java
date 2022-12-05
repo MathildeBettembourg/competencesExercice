@@ -1,11 +1,15 @@
 package fr.mebg.formation.spring.competences.mycomp.equipe;
 
+import fr.mebg.formation.spring.competences.mycomp.personnes.NiveauCompetence;
 import fr.mebg.formation.spring.competences.mycomp.personnes.Personne;
 import fr.mebg.formation.spring.competences.mycomp.personnes.PersonneService;
+import fr.mebg.formation.spring.competences.mycomp.personnes.dto.PersonneCompetenceMaximumDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class EquipeServiceImpl implements EquipeService {
     private final EquipeRepository equipeRepository;
@@ -90,7 +94,26 @@ public class EquipeServiceImpl implements EquipeService {
 //                equipe.getMembres().remove(membreToDelete);
             }
 
+    @Override
+    public List<PersonneCompetenceMaximumDTO> trouverPersonneCompetenceMaximum(String idEquipe) {
+        Equipe equipe=this.findById(idEquipe);
+        List<PersonneCompetenceMaximumDTO> result = new ArrayList<>();
+        for(Personne personne : equipe.getMembres()){
+      Optional<NiveauCompetence> niveauCompetence = personne.getCompetences().stream().reduce((comp1, comp2) ->{
+          return comp1.getNiveau() > comp2.getNiveau()? comp1:comp2;
+      });
+      List<NiveauCompetence> niveauCompetences = new ArrayList<>();
+      result.add(new PersonneCompetenceMaximumDTO(
+              personne.getId(),
+              personne.getNom(),
+              personne.getPrenom(),
+              niveauCompetence.get()
+      ));
+
+            }
+return null;
+    }
 
 
-        //******avec rewrite du equal
+    //******avec rewrite du equal
 }

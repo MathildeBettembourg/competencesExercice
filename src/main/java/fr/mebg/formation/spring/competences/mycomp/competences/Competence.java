@@ -18,6 +18,9 @@ public class Competence {
         private String nom;
         private String description;
 
+    public Competence(String id) {
+        this.id = id;
     }
+}
 
 

@@ -1,6 +1,7 @@
 package fr.mebg.formation.spring.competences.mycomp.equipe;
 
 import fr.mebg.formation.spring.competences.mycomp.personnes.Personne;
+import fr.mebg.formation.spring.competences.mycomp.personnes.dto.PersonneCompetenceMaximumDTO;
 
 import java.util.List;
 
@@ -23,6 +24,8 @@ public interface EquipeService {
      */
         Equipe ajoutMembre(String idEquipe, String idMembre);
         Equipe deleteMembre(String idEquipe, String IdMembre);
+
+        List<PersonneCompetenceMaximumDTO> trouverPersonneCompetenceMaximum(String idEquipe);
     }
 
 

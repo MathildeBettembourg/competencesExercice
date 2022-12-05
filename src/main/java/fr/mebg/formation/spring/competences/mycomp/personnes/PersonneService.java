@@ -33,5 +33,13 @@ public interface PersonneService {
      * @return la personne modifiee
      */
    Personne supprimerCompetence(String id, String idc);
+
+    /**
+     * Retourne une liste de personne par competence
+     * @param idc de la competence
+     * @param niveaux niveau de la competence
+     * @return
+     */
     List<Personne> afficherCompetencesValeurs(String idc, Integer niveaux);
+    List<Personne> afficherNiveauSupA(String idc, Integer niveaux);
 }
