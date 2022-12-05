@@ -58,4 +58,6 @@ public class EquipeController {
                               @PathVariable String idMembre){
         return this.equipeService.deleteMembre(idEquipe, idMembre);
     }
+
+    @GetMapping("{idEquipe}/membres?fields={id, nom, prenom, maxcomp}")
 }
