@@ -25,12 +25,12 @@ public class CompetenceServiceImpl implements CompetenceService {
     }
 
     @Override
-    public Competence findById(String s) {
-        return competenceRepository.findById(s).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public Competence findById(String id) {
+        return competenceRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public void deleteById(String s) {
-        competenceRepository.deleteById(s);
+    public void deleteById(String id) {
+        competenceRepository.deleteById(id);
     }
 }

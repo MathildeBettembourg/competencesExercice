@@ -1,5 +1,6 @@
 package fr.mebg.formation.spring.competences.mycomp.personnes;
 
+import fr.mebg.formation.spring.competences.mycomp.personnes.dto.PersonneMinimalDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,16 +18,18 @@ public class PersonneController {
     /**
      * FONCTION FINDALL()
      * permet de recuperer la liste des personnes
+     *
      * @return une liste de personne
      */
     @GetMapping("")
-    public List<Personne> findAll() {
+    public List<PersonneMinimalDTO> findAll() {
         return personneService.findAll();
     }
 
     /**
-     *POST
+     * POST
      * fonction recuperant la nouvelle personne à mettre en base de donnée
+     *
      * @param entity de type Personne
      * @return une entité
      */
@@ -38,6 +41,7 @@ public class PersonneController {
     /**
      * FINDBYID
      * fonction permet de trouver par id id
+     *
      * @param id qui est l'id de la personne à trouver
      * @return
      */
@@ -45,15 +49,35 @@ public class PersonneController {
     public Personne findById(@PathVariable String id) {
         return personneService.findById(id);
     }
+
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable String id) {
         personneService.deleteById(id);
     }
 
-    @PutMapping("{id}/competence/{idc}")
-    public  NiveauCompetence ajoutModifNiveauCompetence(@PathVariable String id,
-                                                @PathVariable String idc,
-                                                @RequestParam Integer niveau){
+    @PutMapping("{id}/competences/{idc}")
+    public Personne ajoutModifNiveauCompetence(@PathVariable String id,
+                                               @PathVariable String idc,
+                                               @RequestParam Integer niveau)
+    {
         return this.personneService.modifNiveau(id, idc, niveau);
     }
+//    @PutMapping("{id}/competences/{idc}")
+//    public Personne ajoutModifNiveauCompetence(@PathVariable String id,
+//                                               @RequestBody NiveauCompetence niveauCompetence)
+//    {
+//        return this.personneService.modifNiveau(id, niveauCompetence.getId(), niveauCompetence.getNiveau());
+//    }
+    @DeleteMapping("{id}/competences/{idc}")
+    public Personne supprimerCompetence(@PathVariable String id,
+                                         @PathVariable String idc){
+        return this.personneService.supprimerCompetence(id, idc);
+    }
+
+    @GetMapping("competences/{idc}")
+    public List<Personne> afficherCompetencesValeurs(@PathVariable String idc,
+                                                @RequestParam Integer niveaux){
+        return this.personneService.afficherCompetencesValeurs(idc, niveaux);
+    }
+
 }

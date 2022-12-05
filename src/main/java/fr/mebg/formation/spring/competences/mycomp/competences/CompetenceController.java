@@ -41,11 +41,11 @@ public class CompetenceController {
      * @return
      */
     @GetMapping("{id}")
-    public Competence findById(@PathVariable String s) {
-        return competenceService.findById(s);
+    public Competence findById(@PathVariable String id) {
+        return competenceService.findById(id);
     }
     @DeleteMapping("{id}")
-    public void deleteById(@PathVariable String s) {
-        competenceService.deleteById(s);
+    public void deleteById(@PathVariable String id) {
+        competenceService.deleteById(id);
     }
 }

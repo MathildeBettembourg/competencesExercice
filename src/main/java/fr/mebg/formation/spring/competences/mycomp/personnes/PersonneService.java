@@ -1,9 +1,12 @@
 package fr.mebg.formation.spring.competences.mycomp.personnes;
 
+import fr.mebg.formation.spring.competences.mycomp.personnes.dto.PersonneMinimalDTO;
+
+import java.net.NetworkInterface;
 import java.util.List;
 
 public interface PersonneService {
-    List<Personne> findAll();
+    List<PersonneMinimalDTO> findAll();
 
     Personne save(Personne entity);
 
@@ -11,5 +14,24 @@ public interface PersonneService {
 
     void deleteById(String s);
 
-    NiveauCompetence modifNiveau(String id, String idc, Integer niveau);
+    /**
+     * Ajoute un niveau de comptence a la personne,
+     * ce a une personne;
+     * si cette personne possede deja un niveau de
+     * competence sa valeur de niveau est mise a jours.
+     * @param id id personne
+     * @param idc id du niveau de competence
+     * @param niveau a editer
+     * @return personne
+     */
+   Personne modifNiveau(String id, String idc, Integer niveau);
+
+    /**
+     * Methode pour suppreimer ici nullifier le niveau de competence d'une personne
+     * @param id de la personne
+     * @param idc de la competence à delete
+     * @return la personne modifiee
+     */
+   Personne supprimerCompetence(String id, String idc);
+    List<Personne> afficherCompetencesValeurs(String idc, Integer niveaux);
 }

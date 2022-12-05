@@ -1,23 +1,67 @@
 package fr.mebg.formation.spring.competences.mycomp.personnes;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.mebg.formation.spring.competences.mycomp.competences.CompetenceService;
+import fr.mebg.formation.spring.competences.mycomp.personnes.dto.PersonneMinimalDTO;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
+
 //enlever le @servie et faire personne configuration
 public class PersonneServiceImpl implements PersonneService {
+    private final ObjectMapper objectMapper;
+    private final PersonneRepository personneRepository;
+private final CompetenceService competenceService;
 
-    public PersonneServiceImpl(PersonneRepository personneRepository) {
+    public PersonneServiceImpl(PersonneRepository personneRepository, ObjectMapper objectMapper, CompetenceService competenceService) {
         this.personneRepository = personneRepository;
+        this.objectMapper = objectMapper;
+        this.competenceService = competenceService;
     }
 
-    private final PersonneRepository personneRepository;
 
     @Override
-    public List<Personne> findAll() {
-        return personneRepository.findAll();
+    public List<PersonneMinimalDTO> findAll() {
+//        List<Personne> listPersonnes = personneRepository.findAll();
+//        return objectMapper.convertValue(
+//                listPersonnes,
+//                new TypeReference<List<PersonneMinimalDTO>>() {
+//                };
+        //ou bien**************************************************
+        List<Personne> listPersonnes = personneRepository.findAll(PageRequest.of(0, 10)).toList();
+        return objectMapper.convertValue(
+                listPersonnes,
+                new TypeReference<List<PersonneMinimalDTO>>() {
+                }
+        );
+        //ou bien*******************************************************
+
+        // List<PersonneMinimalDTO> listePersonneMinimal = new ArrayList<>();
+        // for (Personne personne : listPersonnes) {
+//            PersonneMinimalDTO personneMinimal = new PersonneMinimalDTO();
+//            personneMinimal.setNom(personne.getNom());
+//            personneMinimal.setPrenom(personne.getPrenom());
+//            personneMinimal.setId(personne.getId());
+//            listePersonneMinimal.add(personneMinimal);
+
+        //instance qui contient vers la classe template
+        //   listePersonneMinimal.add(this.objectMapper.convertValue(personne, PersonneMinimalDTO.class));
+        // }
+        //return listePersonneMinimal;
+//OU BIEN ************************************************************
+        //demande 1e pàag ou retour 10 elements.
+        //ca retourne une page et pas une liste
+//        List<Personne> listePersonnes = personneRepository.findAll(PageRequest.of(0, 10));
+//        return objectMapper.convertValue(
+//                listPersonnes,
+//                new TypeReference<List<PersonneMinimalDTO>>() {
+//                }
+//        );
     }
 
     @Override
@@ -27,7 +71,7 @@ public class PersonneServiceImpl implements PersonneService {
 
     @Override
     public Personne findById(String id) {
-        return personneRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return personneRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -35,13 +79,74 @@ public class PersonneServiceImpl implements PersonneService {
         personneRepository.deleteById(id);
     }
 
-    public NiveauCompetence modifNiveau(String id,String idc, int niveau){
-        NiveauCompetence niveauCompetenceAModifier = this.findById(id).getCompetences().get(idc.parseInt());
-        if(niveauCompetenceAModifier == null) {
-            niveauCompetenceAModifier.setNiveau(niveau);
-            }else if(!niveauCompetenceAModifier.equals(niveau)){
-               niveauCompetenceAModifier.setNiveau(niveau);
+    @Override
+    public Personne modifNiveau(String id, String idc, Integer niveau) {
+        Personne personne = this.findById(id);
+        List<NiveauCompetence> niveauCompetenceAModifier = personne.getCompetences();
+        Boolean flag=false;
+        for (NiveauCompetence competence : niveauCompetenceAModifier
+        ) {
+            if
+            (Objects.equals(idc, competence.getCompetence().getId())) {
+                competence.setNiveau(niveau);
+                flag=true;
+            }
         }
-        return niveauCompetenceAModifier;
+        if(!flag) {
+            niveauCompetenceAModifier.add(new NiveauCompetence(this.competenceService.findById(idc), niveau));
+        }
+        return this.save(personne);
     }
+
+    /*** AUTRE****************************************************************************
+     * public Personne modifNiveau(String id, String idc, Integer niveau) {
+     *         Personne personne = filtreListeNiveauCompetenceParCompetence(id, idc)
+     *        return this.save(personne)
+     */
+
+
+    @Override
+    public Personne supprimerCompetence(String id, String idc) {
+        Personne personne = this.findById(id);
+        List<NiveauCompetence> listeNiveauCompetenceAModifier = personne.getCompetences();
+        for (NiveauCompetence competence : listeNiveauCompetenceAModifier
+        ) {
+            if
+            (!Objects.equals(idc, competence.getCompetence().getId())) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }else{
+                competence.setNiveau(0);
+            }
+        }
+        return this.save(personne);
+    };
+
+    //public Personne supprimerNiveauCompetence(String id, String idc){
+    //Personne personne = filtreListeNiveauCompetenceParCompetencee(id, idc)
+    //return this.save(personne);
+
+//         * public Personne filtreListeNiveauCompetenceParCompetencee(String id, String idc, Integer niveau) {
+//     *         Personne personne = this.findById(id);
+//     *        Competence competence=this.CompetenceService.findById(idc)
+//     *        List<NiveauCompetenc>niveauCompetence = personne.getCompetence();
+//     *        niveauCompetences.removeIf(niveauCompetence -> niveauCompetence.getCompetence().equals(competence)));
+//     *
+//     *        return this.save(personne)
+@Override
+    public List<Personne> afficherCompetencesValeurs(String idc,Integer niveaux){
+    List<Personne> listePersonnes = this.personneRepository.findAll();
+    List<Personne> selectedPersonnes= new ArrayList<>();
+    for (Personne personne: listePersonnes
+         ) {
+        for(NiveauCompetence listeNiveauCompetence: personne.getCompetences())
+            if(Objects.equals(idc, listeNiveauCompetence.getCompetence().getId()) && listeNiveauCompetence.getNiveau()>=niveaux){
+                selectedPersonnes.add(personne);
+            }
+    }
+    return selectedPersonnes;
+
+};
 }
+
+
+
