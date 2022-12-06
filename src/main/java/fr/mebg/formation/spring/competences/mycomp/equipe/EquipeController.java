@@ -59,5 +59,5 @@ public class EquipeController {
         return this.equipeService.deleteMembre(idEquipe, idMembre);
     }
 
-    @GetMapping("{idEquipe}/membres?fields={id, nom, prenom, maxcomp}")
+   // @GetMapping("{idEquipe}/membres?fields={id, nom, prenom, maxcomp}")
 }

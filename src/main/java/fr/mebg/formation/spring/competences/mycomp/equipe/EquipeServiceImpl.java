@@ -4,14 +4,18 @@ import fr.mebg.formation.spring.competences.mycomp.personnes.NiveauCompetence;
 import fr.mebg.formation.spring.competences.mycomp.personnes.Personne;
 import fr.mebg.formation.spring.competences.mycomp.personnes.PersonneService;
 import fr.mebg.formation.spring.competences.mycomp.personnes.dto.PersonneCompetenceMaximumDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class EquipeServiceImpl implements EquipeService {
+    private static Logger logger = LoggerFactory.getLogger(EquipeService.class);
     private final EquipeRepository equipeRepository;
     private final PersonneService personneService;
 
@@ -34,12 +38,17 @@ public class EquipeServiceImpl implements EquipeService {
                 this.personneService.save(membre);
         }
     }
+        entity.setDateModification(LocalDateTime.now());
+        logger.info("Sauvegarde d'une nouvelle equipe"+entity);
         return equipeRepository.save(entity);
     }
 
     @Override
     public Equipe findById(String id) {
-        return equipeRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return equipeRepository.findById(id).orElseThrow(()-> {
+            logger.warn("id invalide" + id);
+            return new ResponseStatusException(HttpStatus.NOT_FOUND);
+        });
     }
 
     @Override

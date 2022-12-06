@@ -3,6 +3,7 @@ package fr.mebg.formation.spring.competences.mycomp.competences;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class CompetenceServiceImpl implements CompetenceService {
@@ -21,6 +22,7 @@ public class CompetenceServiceImpl implements CompetenceService {
 
     @Override
     public Competence save(Competence entity) {
+        entity.setDateModification(LocalDateTime.now());
         return competenceRepository.save(entity);
     }
 

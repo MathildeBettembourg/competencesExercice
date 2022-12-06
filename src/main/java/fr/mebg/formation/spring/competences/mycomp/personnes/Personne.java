@@ -1,5 +1,6 @@
 package fr.mebg.formation.spring.competences.mycomp.personnes;
 
+import fr.mebg.formation.spring.competences.mycomp.utils.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,10 +14,10 @@ import java.util.List;
 @Document
 @AllArgsConstructor
 @NoArgsConstructor
-public class Personne {
+public class Personne extends Entity {
 
-    @Id
-    private String id;
+//    @Id
+//    private String id;
     private String nom;
     private String prenom;
 

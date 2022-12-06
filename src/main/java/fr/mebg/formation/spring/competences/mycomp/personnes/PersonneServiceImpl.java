@@ -2,12 +2,14 @@ package fr.mebg.formation.spring.competences.mycomp.personnes;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.mebg.formation.spring.competences.mycomp.competences.Competence;
 import fr.mebg.formation.spring.competences.mycomp.competences.CompetenceService;
 import fr.mebg.formation.spring.competences.mycomp.personnes.dto.PersonneMinimalDTO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -66,6 +68,7 @@ public class PersonneServiceImpl implements PersonneService {
 
     @Override
     public Personne save(Personne entity) {
+        entity.setDateModification(LocalDateTime.now());
         return personneRepository.save(entity);
     }
 
@@ -81,30 +84,32 @@ public class PersonneServiceImpl implements PersonneService {
 
     @Override
     public Personne modifNiveau(String id, String idc, Integer niveau) {
-        Personne personne = this.findById(id);
-        List<NiveauCompetence> niveauCompetenceAModifier = personne.getCompetences();
-        Boolean flag = false;
-        for (NiveauCompetence competence : niveauCompetenceAModifier
-        ) {
-            if
-            (Objects.equals(idc, competence.getCompetence().getId())) {
-                competence.setNiveau(niveau);
-                flag = true;
-            }
-        }
-        if (!flag) {
-            niveauCompetenceAModifier.add(new NiveauCompetence(this.competenceService.findById(idc), niveau));
-        }
-        return this.save(personne);
-    }
+        Personne personne = filtreListeNiveauCompetenceParCompetencee(id, idc);
+        personne.getCompetences().add(new NiveauCompetence((new Competence(idc)), niveau));
+        //creer le constructeur avec l'id
+        return this.save(personne);}
 
-    /*** AUTRE****************************************************************************
-     * public Personne modifNiveau(String id, String idc, Integer niveau) {
-     *         Personne personne = filtreListeNiveauCompetenceParCompetence(id, idc)
-     *         personne.getCompetence().add(new Niv(new competence(idc, niveau))
-     *         //creer le constructeur avec l'id
-     *        return this.save(personne)
-     */
+//        Personne personne = this.findById(id);
+//        List<NiveauCompetence> niveauCompetenceAModifier = personne.getCompetences();
+//        Boolean flag = false;
+//        for (NiveauCompetence competence : niveauCompetenceAModifier
+//        ) {
+//            if
+//            (Objects.equals(idc, competence.getCompetence().getId())) {
+//                competence.setNiveau(niveau);
+//                flag = true;
+//            }
+//        }
+//        if (!flag) {
+//            niveauCompetenceAModifier.add(new NiveauCompetence(this.competenceService.findById(idc), niveau));
+//        }
+//        return this.save(personne);
+//    }
+
+
+//     public Personne modifNiveau(String id, String idc, Integer niveau) {
+
+
 
 
     @Override
@@ -120,6 +125,7 @@ public class PersonneServiceImpl implements PersonneService {
                 competence.setNiveau(0);
             }
         }
+        personne.setDateModification(LocalDateTime.now());
         return this.save(personne);
     }
 
@@ -129,13 +135,14 @@ public class PersonneServiceImpl implements PersonneService {
     //Personne personne = filtreListeNiveauCompetenceParCompetencee(id, idc)
     //return this.save(personne);
 
-    //         * public Personne filtreListeNiveauCompetenceParCompetencee(String id, String idc, Integer niveau) {
-//     *         Personne personne = this.findById(id);
-//     *        Competence competence=this.CompetenceService.findById(idc)
-//     *        List<NiveauCompetenc>niveauCompetence = personne.getCompetence();
-//     *        niveauCompetences.removeIf(niveauCompetence -> niveauCompetence.getCompetence().equals(competence)));
-//     *
-//     *        return this.save(personne)
+    public Personne filtreListeNiveauCompetenceParCompetencee(String id, String idc) {
+         Personne personne = this.findById(id);
+        Competence competence=this.competenceService.findById(idc);
+        List<NiveauCompetence>niveauCompetences = personne.getCompetences();
+        niveauCompetences.removeIf(niveauCompetence -> niveauCompetence.getCompetence()==null || niveauCompetence.getCompetence().equals(competence));
+        return this.save(personne);
+    }
+
     @Override
     public List<Personne> afficherCompetencesValeurs(String idc, Integer niveaux) {
         List<Personne> listePersonnes = this.personneRepository.findAll();

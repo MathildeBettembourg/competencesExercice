@@ -1,6 +1,7 @@
 package fr.mebg.formation.spring.competences.mycomp.equipe;
 
 import fr.mebg.formation.spring.competences.mycomp.personnes.Personne;
+import fr.mebg.formation.spring.competences.mycomp.utils.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,10 +15,10 @@ import java.util.*;
 @Document
 @AllArgsConstructor
 @NoArgsConstructor
-public class Equipe {
+public class Equipe extends Entity {
 
-        @Id
-        private String id;
+//        @Id
+//        private String id;
 
         private String nom;
         @DBRef

@@ -79,11 +79,11 @@ public class PersonneController {
                                                 @RequestParam Integer niveaux){
         return this.personneService.afficherCompetencesValeurs(idc, niveaux);
     }
-   @GetMapping("competences/{idc}")
-    public List<Personne> rechercherPersonnParCompetenceSupA(
-             @PathVariable String idc,
-             @RequestParam Integer niveau){
-        return personneService.afficherNiveauSupA(idc, niveau);
-    }
+//   @GetMapping("competences/{idc}")
+//    public List<Personne> rechercherPersonnParCompetenceSupA(
+//             @PathVariable String idc,
+//             @RequestParam Integer niveau){
+//        return personneService.afficherNiveauSupA(idc, niveau);
+//    }
 
 }
